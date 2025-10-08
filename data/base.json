@@ -1,0 +1,170 @@
+[
+  {
+    "id": 1,
+    "title": "Relatório de Vulnerabilidade 2025: Ameaças Globais",
+    "link": "/reports/vulnerability-2025",
+    "keywords": [
+      "vulnerabilidade",
+      "relatório",
+      "2025",
+      "ameaças",
+      "global",
+      "cibersegurança",
+      "análise",
+      "tendências",
+      "hackers",
+      "risco"
+    ],
+    "description": "Análise aprofundada das principais vulnerabilidades e tendências de cibersegurança para o próximo ano, com foco em ameaças emergentes e possíveis soluções preventivas.",
+    "context": "Usado por equipes de segurança e pesquisadores para planejar políticas de defesa cibernética.",
+    "possible_questions": [
+      "Quais são as principais ameaças cibernéticas previstas para 2025?",
+      "O que é o Relatório de Vulnerabilidade 2025?",
+      "Como posso baixar o relatório completo de vulnerabilidades globais?",
+      "Quais setores estão mais vulneráveis em 2025?",
+      "Existe uma versão resumida do relatório?",
+      "O relatório inclui previsões de ataques por IA?",
+      "Quais são as recomendações de mitigação de riscos?"
+    ]
+  },
+  {
+    "id": 2,
+    "title": "Protocolo de Segurança SquareOS: Guia de Implementação",
+    "link": "/docs/squareos-protocol",
+    "keywords": [
+      "protocolo",
+      "squareos",
+      "implementação",
+      "guia",
+      "documentação",
+      "segurança",
+      "sistema operacional",
+      "configuração",
+      "privacidade",
+      "criptografia"
+    ],
+    "description": "Documentação oficial para configurar e manter a segurança do SquareOS em ambientes corporativos, cobrindo desde autenticação até encriptação e isolamento de processos.",
+    "context": "Voltado para administradores de sistemas, desenvolvedores e empresas que utilizam o SquareOS.",
+    "possible_questions": [
+      "Como implementar o protocolo de segurança do SquareOS?",
+      "O que é o protocolo de segurança do SquareOS?",
+      "Como configurar autenticação segura no SquareOS?",
+      "O SquareOS possui firewall nativo?",
+      "Como funciona o isolamento de processos no SquareOS?",
+      "Há suporte para criptografia de disco?",
+      "Como aplicar atualizações de segurança no SquareOS?"
+    ]
+  },
+  {
+    "id": 3,
+    "title": "Mitigação de Ataques DDOS em Tempo Real",
+    "link": "/article/ddos-mitigation",
+    "keywords": [
+      "ddos",
+      "ataque",
+      "mitigação",
+      "rede",
+      "segurança",
+      "infraestrutura",
+      "proteção",
+      "servidores",
+      "cloudflare",
+      "defesa"
+    ],
+    "description": "Estratégias avançadas e técnicas de resposta em tempo real para identificar, filtrar e neutralizar ataques de Negação de Serviço Distribuído (DDOS) em diferentes camadas da rede.",
+    "context": "Ideal para administradores de rede, provedores de hospedagem e desenvolvedores que gerenciam infraestrutura de alto tráfego.",
+    "possible_questions": [
+      "O que é um ataque DDOS?",
+      "Como detectar um ataque DDOS em tempo real?",
+      "Como proteger meu servidor de um ataque DDOS?",
+      "Quais ferramentas posso usar para mitigação de DDOS?",
+      "O SquareOS tem sistema de defesa contra DDOS?",
+      "Como a Cloudflare ajuda na mitigação de ataques?",
+      "Quais são os tipos mais comuns de DDOS?"
+    ]
+  },
+  {
+    "id": 4,
+    "title": "Treinamento: Engenharia Social e Phishing",
+    "link": "/training/phishing-social",
+    "keywords": [
+      "phishing",
+      "engenharia social",
+      "treinamento",
+      "conscientização",
+      "golpes",
+      "educação",
+      "fraudes",
+      "segurança digital",
+      "comportamento",
+      "simulações"
+    ],
+    "description": "Módulo de treinamento interativo para conscientização de funcionários contra técnicas de manipulação e golpes cibernéticos baseados em engenharia social e phishing.",
+    "context": "Recomendado para empresas, escolas e instituições que desejam treinar usuários sobre segurança digital.",
+    "possible_questions": [
+      "O que é engenharia social?",
+      "Como identificar um ataque de phishing?",
+      "Como proteger funcionários contra golpes digitais?",
+      "Existe treinamento gratuito sobre phishing?",
+      "O treinamento inclui simulações práticas?",
+      "Como aplicar políticas anti-phishing na empresa?",
+      "Quais são os sinais de um e-mail fraudulento?"
+    ]
+  },
+  {
+    "id": 5,
+    "title": "Autenticação Multifator: Guia Completo",
+    "link": "/security/multifactor-guide",
+    "keywords": [
+      "autenticação",
+      "multifator",
+      "segurança",
+      "login",
+      "senhas",
+      "token",
+      "2fa",
+      "proteção de conta",
+      "usuário",
+      "acesso"
+    ],
+    "description": "Entenda o funcionamento, importância e configuração da autenticação multifator (MFA) em sistemas modernos e aplicações corporativas.",
+    "context": "Ideal para administradores de TI e desenvolvedores que desejam elevar a segurança de autenticação.",
+    "possible_questions": [
+      "O que é autenticação multifator?",
+      "Como ativar o 2FA em um sistema?",
+      "Por que o MFA é importante?",
+      "Quais tipos de autenticação multifator existem?",
+      "Como implementar MFA no SquareOS?",
+      "MFA é obrigatório por lei em alguns setores?",
+      "Quais apps oferecem suporte a autenticação multifator?"
+    ]
+  },
+  {
+    "id": 6,
+    "title": "Firewall Inteligente com IA: Nova Geração",
+    "link": "/innovation/ai-firewall",
+    "keywords": [
+      "firewall",
+      "inteligência artificial",
+      "segurança de rede",
+      "machine learning",
+      "detecção de intrusões",
+      "automação",
+      "proteção",
+      "tráfego",
+      "defesa adaptativa",
+      "squareos"
+    ],
+    "description": "Descubra como firewalls baseados em inteligência artificial identificam padrões de comportamento malicioso e se adaptam automaticamente para proteger redes modernas.",
+    "context": "Usado em ambientes corporativos e servidores que exigem defesa dinâmica e aprendizado automático.",
+    "possible_questions": [
+      "O que é um firewall inteligente?",
+      "Como a IA pode melhorar a segurança de rede?",
+      "O SquareOS possui firewall com IA?",
+      "Como configurar um firewall adaptativo?",
+      "Qual a diferença entre firewall tradicional e com IA?",
+      "Como funciona a detecção automática de ameaças?",
+      "Firewalls com IA substituem os humanos?"
+    ]
+  }
+]

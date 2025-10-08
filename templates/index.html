@@ -1,0 +1,1172 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SIS - SECURITY INFO SYSTEM</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+    
+    <style>
+    /* === VARIÁVEIS DE TEMA NEBULA === */
+:root {
+    --bg-dark: #0a0a0a;
+    --accent: #9933FF;
+    --accent-light: rgba(153, 51, 255, 0.2);
+    --text-main: #ffffff;
+    --text-muted: #aaa;
+    --radius: 12px;
+    --font-main: 'Poppins', sans-serif;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: var(--font-main);
+    color: var(--text-main);
+}
+
+body, html {
+    height: 100%;
+    background: var(--bg-dark);
+    overflow: hidden;
+}
+
+/* === PARTÍCULAS DE FUNDO === */
+canvas#particles {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+}
+
+/* === APP WRAPPER - Centraliza o conteúdo principal === */
+.app-wrapper {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    min-height: 100%;
+    overflow-y: auto;
+    padding: 50px 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+/* === HOME CONTAINER - Ajustado para ser mais flexível === */
+.home-container {
+    text-align: center;
+    width: 90%;
+    max-width: 900px;
+    margin-top: -150px;
+    transition: margin-top 0.5s ease;
+}
+
+/* Move o container para cima ao mostrar resultados */
+.home-container.shifted {
+    margin-top: 20px;
+    justify-content: flex-start;
+}
+
+.app-wrapper.has-results .home-container {
+    justify-content: flex-start;
+}
+
+/* === BANNER DE ALERTA === */
+.alert-banner {
+    background: var(--accent-light);
+    color: var(--accent);
+    padding: 15px 30px;
+    border-radius: var(--radius);
+    margin: 20px auto 40px auto;
+    font-size: 0.9em;
+    font-weight: 500;
+    border: 1px solid var(--accent);
+    box-shadow: 0 0 10px rgba(153, 51, 255, 0.4);
+    max-width: 600px;
+    line-height: 1.4;
+    text-align: left;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.alert-banner i {
+    font-size: 1.5em;
+    color: var(--accent);
+}
+
+/* === LOGO === */
+.logo {
+    font-size: 4em;
+    font-weight: 700;
+    color: var(--accent);
+    text-shadow: 0 0 20px var(--accent-light), 0 0 40px var(--accent-light);
+    margin-bottom: 20px;
+    animation: pulse 2s infinite;
+}
+
+.welcome-text {
+    font-size: 1.5em;
+    font-weight: 300;
+    margin-bottom: 40px;
+    opacity: 1;
+    transition: opacity 0.5s ease;
+}
+
+/* === BROWSER FRAME === */
+.browser-frame {
+    width: 100%;
+    border-radius: var(--radius);
+    overflow: hidden;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6), 0 0 20px var(--accent-light);
+    background: rgba(16, 5, 27, 0.95);
+    border: 1px solid var(--accent-light);
+}
+
+/* === ADDRESS BAR === */
+.address-bar {
+    display: flex;
+    align-items: center;
+    background: rgba(0, 0, 0, 0.3);
+    padding: 8px 15px;
+    border-bottom: 1px solid rgba(153, 51, 255, 0.1);
+    gap: 10px;
+}
+
+.address-bar-controls {
+    display: flex;
+    gap: 5px;
+}
+
+.address-bar-controls .dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: #ff5f56;
+}
+
+.address-bar-controls .dot:nth-child(2) {
+    background: #ffbd2e;
+}
+
+.address-bar-controls .dot:nth-child(3) {
+    background: #27c93f;
+}
+
+.address-bar-input {
+    flex-grow: 1;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    padding: 5px 15px;
+    font-size: 0.9em;
+    color: var(--text-muted);
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.address-bar-input i {
+    margin-right: 8px;
+    color: var(--accent);
+}
+
+
+/* === BARRA DE BUSCA === */
+.search-area-wrapper {
+    position: relative;
+    width: 100%;
+    padding: 20px;
+    margin-bottom: 0;
+}
+
+.search-box {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(26, 10, 43, 0.8);
+    border-radius: var(--radius);
+    padding: 10px 20px;
+    box-shadow: 0 0 15px var(--accent-light);
+    transition: box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+.search-box:hover {
+    box-shadow: 0 0 25px var(--accent);
+    transform: scale(1.02);
+}
+
+.search-box input {
+    flex: 1;
+    border: none;
+    outline: none;
+    background: none;
+    color: var(--text-main);
+    font-size: 1.1em;
+    padding: 10px;
+}
+
+.search-box button {
+    background: var(--accent);
+    border: none;
+    color: var(--bg-dark);
+    padding: 10px 20px;
+    border-radius: var(--radius);
+    margin-left: 10px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.search-box button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0 15px var(--accent-light);
+}
+
+/* === DROPDOWN DE SUGESTÕES === */
+.suggestions-dropdown {
+    position: absolute;
+    top: calc(100% + 5px);
+    left: 20px;
+    right: 20px;
+    background: rgba(16, 5, 27, 0.95);
+    border-radius: 0 0 var(--radius) var(--radius);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5), 0 0 15px var(--accent-light);
+    padding: 5px 0;
+    max-height: 250px;
+    overflow-y: auto;
+    text-align: left;
+    display: none;
+    backdrop-filter: blur(5px);
+}
+
+.suggestion-item {
+    padding: 10px 20px;
+    cursor: pointer;
+    font-size: 1em;
+    transition: background-color 0.2s, color 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.suggestion-item:hover {
+    background-color: var(--accent-light);
+    color: var(--accent);
+}
+
+.suggestion-item i {
+    color: var(--text-muted);
+    font-size: 0.9em;
+}
+
+.suggestion-item:hover i {
+    color: var(--accent);
+}
+
+
+/* === CONTÊINER DE RESULTADOS === */
+.results-container {
+    width: 90%;
+    max-width: 900px;
+    margin-top: 50px;
+    background: rgba(0, 0, 0, 0.6);
+    border-radius: var(--radius);
+    padding: 30px;
+    border: 1px solid var(--accent-light);
+    box-shadow: 0 0 30px var(--accent-light);
+    display: none;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+.results-container.visible {
+    display: block;
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.results-container h2 {
+    color: var(--accent);
+    font-weight: 500;
+    font-size: 1.8em;
+    margin-bottom: 20px;
+    border-bottom: 1px solid rgba(153, 51, 255, 0.3);
+    padding-bottom: 10px;
+}
+
+#results-list {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+}
+
+.result-item {
+    text-align: left;
+    padding-bottom: 15px;
+    border-bottom: 1px dashed rgba(255, 255, 255, 0.1);
+}
+
+.result-item:last-child {
+    border-bottom: none;
+}
+
+.result-item-title {
+    font-size: 1.3em;
+    color: var(--text-main);
+    font-weight: 600;
+    display: block;
+    text-decoration: none;
+    transition: color 0.2s;
+}
+
+.result-item-title:hover {
+    color: var(--accent);
+}
+
+.result-item-link {
+    font-size: 0.9em;
+    color: #6a6a6a;
+    margin-top: 4px;
+    display: block;
+    word-break: break-all;
+}
+
+.result-item-description {
+    font-size: 1em;
+    color: var(--text-muted);
+    margin-top: 8px;
+    line-height: 1.4;
+}
+
+.no-results {
+    color: var(--text-muted);
+    font-style: italic;
+    margin-top: 20px;
+    text-align: center;
+    display: none;
+}
+
+/* === BOTÃO DA IA === */
+.lura-btn {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: var(--accent);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 0 20px var(--accent-light);
+    font-size: 1.5em;
+    z-index: 51;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.lura-btn:hover {
+    transform: scale(1.1);
+    box-shadow: 0 0 30px var(--accent);
+}
+
+/* FOOTER */
+.footer {
+    position: relative;
+    width: 100%;
+    margin-top: 80px;
+    margin-bottom: 20px;
+    font-size: 0.8em;
+    color: var(--text-muted);
+    opacity: 0.7;
+    text-align: center;
+}
+
+/* === ANIMAÇÕES === */
+@keyframes pulse {
+    0% {
+        text-shadow: 0 0 20px var(--accent-light), 0 0 40px var(--accent-light);
+    }
+    50% {
+        text-shadow: 0 0 30px var(--accent), 0 0 60px var(--accent-light);
+    }
+    100% {
+        text-shadow: 0 0 20px var(--accent-light), 0 0 40px var(--accent-light);
+    }
+}
+
+/* === VOZ / MICROFONE (Overlay Principal) === */
+.voice-activation-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.9);
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 100;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.voice-activation-overlay.active {
+    display: flex;
+    opacity: 1;
+}
+
+.mic-pulse-effect {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    background: var(--accent);
+    color: var(--bg-dark);
+    font-size: 4em;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    box-shadow: 0 0 40px var(--accent);
+}
+
+.mic-pulse-effect::before {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background: var(--accent);
+    opacity: 0;
+    animation: mic-wave 1.5s infinite;
+}
+
+.voice-activation-overlay.listening .mic-pulse-effect::before {
+    opacity: 0.7;
+}
+
+@keyframes mic-wave {
+    0% {
+        transform: scale(1);
+        opacity: 0.7;
+    }
+    100% {
+        transform: scale(1.5);
+        opacity: 0;
+    }
+}
+
+.mic-status-text {
+    margin-top: 30px;
+    font-size: 1.8em;
+    font-weight: 500;
+    color: var(--accent);
+    text-shadow: 0 0 10px var(--accent-light);
+}
+
+/* === NOVO: PAINEL LURA AI LATERAL === */
+.lura-panel {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 350px;
+    height: 100%;
+    background: rgba(10, 10, 10, 0.98); /* Fundo semi-transparente escuro */
+    backdrop-filter: blur(8px);
+    border-left: 1px solid var(--accent-light);
+    box-shadow: -10px 0 30px rgba(0, 0, 0, 0.5);
+    z-index: 50; /* Acima de tudo, mas abaixo do overlay de voz */
+    transform: translateX(100%); /* Escondido por padrão */
+    transition: transform 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    display: flex;
+    flex-direction: column;
+}
+
+.lura-panel.open {
+    transform: translateX(0); /* Visível */
+}
+
+.lura-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 20px;
+    border-bottom: 1px solid rgba(153, 51, 255, 0.3);
+}
+
+.lura-header h3 {
+    font-size: 1.2em;
+    font-weight: 600;
+    color: var(--accent);
+}
+
+.lura-close-btn {
+    background: none;
+    border: none;
+    font-size: 1.2em;
+    cursor: pointer;
+    color: var(--text-muted);
+    transition: color 0.2s;
+}
+
+.lura-close-btn:hover {
+    color: var(--text-main);
+}
+
+.lura-content {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    overflow-y: auto;
+}
+
+/* Canvas para o efeito visual dos neurônios */
+#lura-brain-canvas {
+    width: 100%;
+    height: 200px;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: var(--radius);
+    margin-bottom: 20px;
+    border: 1px solid rgba(153, 51, 255, 0.1);
+    box-shadow: inset 0 0 15px rgba(153, 51, 255, 0.1);
+}
+
+.lura-status {
+    font-size: 1em;
+    color: var(--text-muted);
+    margin-bottom: 20px;
+    text-align: center;
+    min-height: 1.2em;
+}
+
+.lura-mic-control-area {
+    margin-bottom: 20px;
+}
+
+/* Estilização do botão de microfone no painel */
+#lura-mic-btn {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    background: var(--accent);
+    color: var(--bg-dark);
+    font-size: 1.8em;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 0 15px var(--accent-light);
+    transition: all 0.2s;
+}
+
+#lura-mic-btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 25px var(--accent);
+}
+
+.lura-mic-control-area.listening #lura-mic-btn {
+    animation: mic-wave 1.5s infinite;
+    box-shadow: 0 0 40px var(--accent);
+}
+
+.lura-input-area {
+    display: flex;
+    width: 100%;
+    background: rgba(26, 10, 43, 0.8);
+    border-radius: var(--radius);
+    overflow: hidden;
+    padding: 5px;
+    border: 1px solid var(--accent-light);
+}
+
+#lura-text-input {
+    flex-grow: 1;
+    padding: 10px;
+    border: none;
+    outline: none;
+    background: none;
+    font-size: 1em;
+}
+
+#lura-send-btn {
+    background: var(--accent);
+    border: none;
+    color: var(--bg-dark);
+    padding: 10px 15px;
+    border-radius: calc(var(--radius) - 3px);
+    cursor: pointer;
+    font-weight: 600;
+    transition: background-color 0.2s;
+}
+
+#lura-send-btn:hover {
+    background: #a953ff;
+}
+    </style>
+</head>
+<body>
+
+    <canvas id="particles"></canvas>
+
+    <div class="app-wrapper" id="app-wrapper">
+
+        <div class="home-container" id="home-container">
+            <div class="logo">SECURITY INFO SYSTEM</div>
+            <div class="welcome-text" id="welcome-text">BEM-VINDO AO SECURITY INFO SYSTEM</div>
+            
+            
+
+            <div class="browser-frame">
+                <div class="address-bar">
+                    <div class="address-bar-controls">
+                        <div class="dot"></div>
+                        <div class="dot"></div>
+                        <div class="dot"></div>
+                    </div>
+                    <div class="address-bar-input">
+                        <i class="fa-solid fa-lock"></i>
+                        <span>https://sis.systemoflura.com/</span>
+                    </div>
+                </div>
+                <div class="search-area-wrapper">
+                    <div class="search-box">
+                        <input type="text" id="search-input" placeholder="Digite sua pesquisa, ou pressione o microfone para comando de voz..." autofocus>
+                        
+                        <button id="mic-btn" title="Ativar Reconhecimento de Voz">
+                            <i class="fa-solid fa-microphone-alt"></i>
+                        </button>
+                        
+                        <button id="search-btn" title="Buscar">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                        </button>
+                    </div>
+                    
+                    <div class="suggestions-dropdown" id="suggestions-dropdown">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="results-container" id="results-container">
+            <h2>Resultados para "<span id="search-term-display"></span>"</h2>
+            <div id="results-list">
+            </div>
+            <div class="no-results" id="no-results-message">
+                Nenhum resultado encontrado. Tente refinar sua pesquisa ou pergunte ao LURA AI.
+            </div>
+        </div>
+        <div class="footer">Sua busca protegida, rápida e inteligente. Powered by Square Systems.</div>
+    </div>
+
+    <div class="lura-btn" id="lura-btn" title="Abrir Painel LURA AI">
+        <i class="fa-solid fa-brain"></i>
+    </div>
+
+    <div class="voice-activation-overlay" id="voice-activation-overlay">
+        <div class="mic-pulse-effect" id="mic-pulse-effect">
+            <i class="fa-solid fa-microphone-alt"></i>
+        </div>
+        <div class="mic-status-text" id="mic-status-text">Segure para Falar</div>
+    </div>
+
+    <div class="lura-panel" id="lura-panel">
+        <div class="lura-header">
+            <h3>LURA AI - Assistente de Segurança</h3>
+            <button id="lura-close-btn" class="lura-close-btn"><i class="fa-solid fa-times"></i></button>
+        </div>
+        <div class="lura-content">
+            <canvas id="lura-brain-canvas"></canvas>
+            <div class="lura-status" id="lura-panel-status">Pronto para ouvir seu comando.</div>
+            <div class="lura-mic-control-area">
+                <button id="lura-mic-btn" title="Ativar Reconhecimento de Voz"><i class="fa-solid fa-microphone-alt"></i></button>
+            </div>
+            <div class="lura-input-area">
+                <input type="text" id="lura-text-input" placeholder="Ou digite sua pergunta aqui...">
+                <button id="lura-send-btn"><i class="fa-solid fa-paper-plane"></i></button>
+            </div>
+        </div>
+    </div>
+    <script>
+        const appWrapper = document.getElementById('app-wrapper');
+        const homeContainer = document.getElementById('home-container');
+        const welcomeText = document.getElementById('welcome-text');
+        const searchInput = document.getElementById('search-input');
+        const searchBtn = document.getElementById('search-btn');
+        const luraBtn = document.getElementById('lura-btn');
+        const micBtn = document.getElementById('mic-btn');
+
+        const suggestionsDropdown = document.getElementById('suggestions-dropdown');
+
+        // Elementos de Resultados
+        const resultsContainer = document.getElementById('results-container');
+        const resultsList = document.getElementById('results-list');
+        const searchTermDisplay = document.getElementById('search-term-display');
+        const noResultsMessage = document.getElementById('no-results-message');
+
+        // NOVOS ELEMENTOS LURA AI
+        const luraPanel = document.getElementById('lura-panel');
+        const luraCloseBtn = document.getElementById('lura-close-btn');
+        const luraMicBtn = document.getElementById('lura-mic-btn');
+        const luraPanelStatus = document.getElementById('lura-panel-status');
+        const luraMicControlArea = luraMicBtn.parentElement;
+
+        let isListening = false;
+        let timeoutListening = null;
+        let searchTimeout = null;
+        let isLuraPanelOpen = false; // Novo estado para o painel lateral
+
+        // === LÓGICA DE BUSCA COM BACKEND FLASK ===
+
+        async function performSearch(query) {
+            query = query.trim();
+            if (!query) return;
+
+            resultsList.innerHTML = '';
+            noResultsMessage.style.display = 'none';
+            suggestionsDropdown.style.display = 'none';
+
+            // Ajusta a interface para o modo de resultados
+            homeContainer.classList.add('shifted');
+            appWrapper.classList.add('has-results');
+            resultsContainer.classList.add('visible');
+            searchTermDisplay.textContent = query;
+
+            try {
+                // Simulação: Aqui você faria a chamada real ao Flask
+                // const response = await fetch(`/api/search?query=${encodeURIComponent(query)}`);
+                
+                // Simulação de dados de retorno para o frontend:
+                const simulatedResults = [
+                    { title: "Documento de Políticas de Senha", link: "/docs/senhas", description: "Requisitos de complexidade e periodicidade para senhas corporativas." },
+                    { title: "Guia Rápido de Phishing e Engenharia Social", link: "/docs/phishing-guide", description: "Identifique e-mails maliciosos e evite ataques de engenharia social." },
+                    { title: "Protocolo de Criptografia AES-256", link: "/docs/aes256", description: "Detalhes técnicos da implementação de criptografia em nossos servidores." },
+                ].filter(item => item.title.toLowerCase().includes(query.toLowerCase()));
+                
+                const results = simulatedResults; // Substitua por await response.json() em produção
+
+                if (results.length > 0) {
+                    results.forEach(item => {
+                        const resultItem = document.createElement('div');
+                        resultItem.className = 'result-item';
+                        resultItem.innerHTML = `
+                            <a href="${item.link}" target="_blank" class="result-item-title">${item.title}</a>
+                            <span class="result-item-link">${window.location.origin}${item.link}</span>
+                            <p class="result-item-description">${item.description}</p>
+                        `;
+                        resultsList.appendChild(resultItem);
+                    });
+                } else {
+                    noResultsMessage.style.display = 'block';
+                }
+
+            } catch (error) {
+                console.error('Erro ao executar busca no backend:', error);
+                noResultsMessage.style.display = 'block';
+                noResultsMessage.textContent = `ERRO (Simulado): A busca real falharia aqui. (${error.message})`;
+            }
+        }
+
+        async function fetchAndShowSuggestions(query) {
+            suggestionsDropdown.innerHTML = '';
+            if (query.length < 2) {
+                suggestionsDropdown.style.display = 'none';
+                return;
+            }
+
+            try {
+                // Simulação: Usa os mesmos resultados filtrados para sugestões
+                const simulatedResults = [
+                    { title: "Documento de Políticas de Senha", link: "/docs/senhas", description: "Requisitos de complexidade e periodicidade para senhas corporativas." },
+                    { title: "Guia Rápido de Phishing e Engenharia Social", link: "/docs/phishing-guide", description: "Identifique e-mails maliciosos e evite ataques de engenharia social." },
+                    { title: "Protocolo de Criptografia AES-256", link: "/docs/aes256", description: "Detalhes técnicos da implementação de criptografia em nossos servidores." },
+                ].filter(item => item.title.toLowerCase().includes(query.toLowerCase()));
+                
+                const results = simulatedResults; // Substitua por await response.json() em produção
+
+                if (results.length > 0) {
+                    results.slice(0, 5).forEach(item => {
+                        const itemDiv = document.createElement('div');
+                        itemDiv.className = 'suggestion-item';
+                        itemDiv.innerHTML = `<i class="fa-solid fa-link"></i> <span>${item.title}</span>`; 
+
+                        itemDiv.addEventListener('click', (e) => {
+                            e.stopPropagation();
+                            searchInput.value = item.title;
+                            suggestionsDropdown.style.display = 'none';
+                            performSearch(item.title);
+                            searchInput.blur();
+                        });
+
+                        suggestionsDropdown.appendChild(itemDiv);
+                    });
+                    suggestionsDropdown.style.display = 'block';
+                } else {
+                    suggestionsDropdown.style.display = 'none';
+                }
+            } catch (error) {
+                suggestionsDropdown.style.display = 'none';
+            }
+        }
+
+        function handleSearchInput() {
+            const query = searchInput.value.trim();
+            welcomeText.style.opacity = query.length > 0 ? 0 : 1;
+
+            if (query.length === 0) {
+                homeContainer.classList.remove('shifted');
+                appWrapper.classList.remove('has-results');
+                resultsContainer.classList.remove('visible');
+            }
+
+            clearTimeout(searchTimeout);
+            searchTimeout = setTimeout(() => {
+                fetchAndShowSuggestions(query);
+            }, 300);
+        }
+
+        // === EVENT LISTENERS E CONTROLE DE FOCO ===
+
+        searchInput.addEventListener('input', handleSearchInput);
+
+        searchBtn.addEventListener('click', () => {
+            performSearch(searchInput.value);
+        });
+
+        searchInput.addEventListener('keydown', e => {
+            if(e.key === 'Enter') {
+                e.preventDefault();
+                performSearch(searchInput.value);
+            }
+        });
+
+        searchInput.addEventListener('focus', () => {
+            welcomeText.style.opacity = 0;
+            fetchAndShowSuggestions(searchInput.value.trim());
+        });
+
+        searchInput.addEventListener('blur', () => {
+            setTimeout(() => {
+                if(searchInput.value.trim() === '') welcomeText.style.opacity = 1;
+                suggestionsDropdown.style.display = 'none';
+            }, 150);
+        });
+
+        // === LÓGICA DO PAINEL LURA AI ===
+        
+        luraBtn.addEventListener('click', () => {
+            luraPanel.classList.add('open');
+            isLuraPanelOpen = true;
+            resizeLuraBrainCanvas(); 
+        });
+
+        luraCloseBtn.addEventListener('click', () => {
+            luraPanel.classList.remove('open');
+            isLuraPanelOpen = false;
+        });
+
+        // Botão de enviar mensagem de texto
+        document.getElementById('lura-text-input').addEventListener('keydown', e => {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                document.getElementById('lura-send-btn').click();
+            }
+        });
+
+        document.getElementById('lura-send-btn').addEventListener('click', () => {
+            const query = document.getElementById('lura-text-input').value.trim();
+            if(query) {
+                luraPanelStatus.textContent = `Buscando: "${query}"...`;
+                setTimeout(() => {
+                    luraPanelStatus.textContent = `A IA respondeu: A criptografia ${query} é forte, veja o doc AES-256. (Simulação).`;
+                    document.getElementById('lura-text-input').value = '';
+                }, 2000);
+            }
+        });
+
+
+        // === LÓGICA DE RECONHECIMENTO DE VOZ ===
+
+        const voiceOverlay = document.getElementById('voice-activation-overlay');
+        const micStatusTextEl = document.getElementById('mic-status-text');
+
+        function startListening(isPanel = false) {
+            if (isListening) return;
+            isListening = true;
+            suggestionsDropdown.style.display = 'none';
+            
+            // Simula ativação do 'cérebro'
+            isBrainActive = true; 
+            
+            if (isPanel) {
+                luraPanelStatus.textContent = "Ouvindo... Fale agora!";
+                luraMicControlArea.classList.add('listening');
+            } else {
+                voiceOverlay.classList.add('active', 'listening');
+                micStatusTextEl.textContent = "Ouvindo... Fale agora!";
+            }
+
+            // Simula tempo máximo de escuta (5 segundos)
+            timeoutListening = setTimeout(() => stopListening(isPanel), 5000);
+        }
+
+        function stopListening(isPanel = false) {
+            if (!isListening) return;
+            isListening = false;
+            clearTimeout(timeoutListening);
+
+            // Simula desativação do 'cérebro'
+            isBrainActive = false;
+
+            if (isPanel) {
+                luraPanelStatus.textContent = "Processando seu comando...";
+                luraMicControlArea.classList.remove('listening');
+                processVoiceCommand(true);
+            } else {
+                micStatusTextEl.textContent = "Processando seu comando...";
+                voiceOverlay.classList.remove('listening');
+                processVoiceCommand(false);
+            }
+        }
+
+        function processVoiceCommand(isPanel) {
+            // Comando de voz simulado.
+            const simulatedCommand = "Protocolo de Criptografia AES-256";
+
+            if (isPanel) {
+                luraPanelStatus.textContent = `Comando de voz: "${simulatedCommand}"`;
+                // Simulação de resposta da IA
+                setTimeout(() => {
+                    luraPanelStatus.textContent = `A IA respondeu: Encontrei o documento sobre ${simulatedCommand}. (Simulação).`;
+                }, 2000);
+
+            } else {
+                micStatusTextEl.textContent = `Comando: "${simulatedCommand}"`;
+                setTimeout(() => {
+                    voiceOverlay.classList.remove('active');
+                    micStatusTextEl.textContent = "Segure para Falar";
+
+                    searchInput.value = simulatedCommand;
+                    performSearch(simulatedCommand);
+
+                    searchInput.blur();
+                }, 1500);
+            }
+        }
+
+        // Eventos de clique para o microfone principal
+        micBtn.addEventListener('mousedown', () => startListening(false));
+        micBtn.addEventListener('mouseup', () => stopListening(false));
+        micBtn.addEventListener('mouseleave', () => {
+            if(isListening && !isLuraPanelOpen) stopListening(false);
+        });
+
+        // Eventos de clique para o microfone do painel LURA
+        luraMicBtn.addEventListener('mousedown', () => startListening(true));
+        luraMicBtn.addEventListener('mouseup', () => stopListening(true));
+        luraMicBtn.addEventListener('mouseleave', () => {
+            if(isListening && isLuraPanelOpen) stopListening(true);
+        });
+
+
+        // === PARTÍCULAS INTERATIVAS E CONECTADAS (LÓGICA DO CANVAS PRINCIPAL) ===
+        const canvas = document.getElementById('particles');
+        const ctx = canvas.getContext('2d');
+        let particlesArray = [];
+        let mouse = { x: undefined, y: undefined, radius: 100 };
+
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        window.addEventListener('mousemove', (event) => { mouse.x = event.x; mouse.y = event.y; });
+        window.addEventListener('resize', () => { 
+            canvas.width = window.innerWidth; 
+            canvas.height = window.innerHeight; 
+            initParticles(120); 
+            resizeLuraBrainCanvas(); 
+        });
+        window.addEventListener('mouseout', () => { mouse.x = undefined; mouse.y = undefined; });
+
+        class Particle {
+            constructor() { 
+                this.x = Math.random() * canvas.width; 
+                this.y = Math.random() * canvas.height; 
+                this.baseSize = Math.random() * 3 + 1; 
+                this.size = this.baseSize; 
+                this.density = Math.random() * 30 + 1; 
+                this.speedX = Math.random() * 1.5 - 0.75; 
+                this.speedY = Math.random() * 1.5 - 0.75; 
+            }
+            update() {
+                let dx = mouse.x - this.x; 
+                let dy = mouse.y - this.y; 
+                let distance = Math.sqrt(dx * dx + dy * dy);
+
+                if (distance < mouse.radius) {
+                    let forceDirectionX = dx / distance; 
+                    let forceDirectionY = dy / distance; 
+                    let force = (mouse.radius - distance) / mouse.radius;
+                    this.x -= forceDirectionX * force * this.density / 2; 
+                    this.y -= forceDirectionY * force * this.density / 2; 
+                    this.size = this.baseSize * 1.5;
+                } else {
+                    this.size = this.baseSize; 
+                    this.x += this.speedX; 
+                    this.y += this.speedY;
+                    if (this.x < 0 || this.x > canvas.width) this.speedX *= -1;
+                    if (this.y < 0 || this.y > canvas.height) this.speedY *= -1;
+                }
+            }
+            draw() { 
+                ctx.fillStyle = 'rgba(153,51,255,0.8)'; 
+                ctx.beginPath(); 
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2); 
+                ctx.fill(); 
+            }
+        }
+
+        function initParticles(count) { 
+            particlesArray = []; 
+            for (let i = 0; i < count; i++) { 
+                particlesArray.push(new Particle()); 
+            } 
+        }
+
+        function connectParticles() {
+            let opacityValue = 1;
+            for (let a = 0; a < particlesArray.length; a++) {
+                for (let b = a; b < particlesArray.length; b++) {
+                    let dx = particlesArray[a].x - particlesArray[b].x; 
+                    let dy = particlesArray[a].y - particlesArray[b].y; 
+                    let distance = Math.sqrt(dx * dx + dy * dy);
+
+                    if (distance < 100) {
+                        opacityValue = 1 - (distance / 100);
+                        ctx.strokeStyle = 'rgba(153,51,255,' + opacityValue + ')'; 
+                        ctx.lineWidth = 1; 
+                        ctx.beginPath();
+                        ctx.moveTo(particlesArray[a].x, particlesArray[a].y); 
+                        ctx.lineTo(particlesArray[b].x, particlesArray[b].y); 
+                        ctx.stroke();
+                    }
+                }
+            }
+        }
+
+        function animateParticles() { 
+            ctx.clearRect(0, 0, canvas.width, canvas.height); 
+            connectParticles(); 
+            particlesArray.forEach(p => { p.update(); p.draw(); }); 
+            requestAnimationFrame(animateParticles); 
+        }
+
+        // Inicia o sistema de partículas principal
+        initParticles(120); 
+        animateParticles();
+
+
+        // === SISTEMA DE PARTÍCULAS DO CÉREBRO DA IA (NOVO) ===
+        const brainCanvas = document.getElementById('lura-brain-canvas');
+        const brainCtx = brainCanvas.getContext('2d');
+        let brainParticles = [];
+        let isBrainActive = false; // Controla a reação visual da IA
+
+        function resizeLuraBrainCanvas() {
+            // Garante que o canvas da IA se ajuste ao seu contêiner pai
+            if (!brainCanvas.parentElement) return; // Evita erro se o canvas não estiver na DOM
+            brainCanvas.width = brainCanvas.clientWidth; 
+            brainCanvas.height = brainCanvas.clientHeight;
+            initBrainParticles(40); // Reinicia as partículas ao redimensionar
+        }
+
+        class BrainParticle {
+            constructor() {
+                this.x = Math.random() * brainCanvas.width;
+                this.y = Math.random() * brainCanvas.height;
+                this.baseSize = Math.random() * 2 + 0.5;
+                this.size = this.baseSize;
+                this.baseSpeedX = Math.random() * 0.5 - 0.25;
+                this.baseSpeedY = Math.random() * 0.5 - 0.25;
+                this.pulseFactor = 1; // Fator de pulsação para reação
+                this.color = 'rgba(153, 51, 255, 0.6)';
+            }
+
+            update() {
+                // Movimento base
+                this.x += this.baseSpeedX;
+                this.y += this.baseSpeedY;
+
+                // Mantém dentro dos limites
+                if (this.x < 0 || this.x > brainCanvas.width) this.baseSpeedX *= -1;
+                if (this.y < 0 || this.y > brainCanvas.height) this.baseSpeedY *= -1;
+                
+                // Reação à escuta
+                if (isBrainActive) {
+                    this.pulseFactor = 1 + (Math.sin(Date.now() * 0.005 + this.x) * 0.5);
+                    this.size = this.baseSize * this.pulseFactor * 1.5;
+                } else {
+                    // Transição suave de volta ao estado normal
+                    this.pulseFactor += (1 - this.pulseFactor) * 0.05; 
+                    this.size = this.baseSize * this.pulseFactor;
+                }
+            }
+            
+            draw() {
+                brainCtx.fillStyle = this.color;
+                brainCtx.beginPath();
+                brainCtx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                brainCtx.fill();
+            }
+        }
+
+        function initBrainParticles(count) {
+            brainParticles = [];
+            for (let i = 0; i < count; i++) {
+                brainParticles.push(new BrainParticle());
+            }
+        }
+
+        function connectBrainParticles() {
+            let connectDistance = isBrainActive ? 150 : 100; // Conecta mais ao ouvir
+            for (let a = 0; a < brainParticles.length; a++) {
+                for (let b = a; b < brainParticles.length; b++) {
+                    let dx = brainParticles[a].x - brainParticles[b].x;
+                    let dy = brainParticles[a].y - brainParticles[b].y;
+                    let distance = Math.sqrt(dx * dx + dy * dy);
+
+                    if (distance < connectDistance) {
+                        let opacityValue = 1 - (distance / connectDistance);
+                        // A cor da linha pulsa mais forte ao ouvir
+                        if (isBrainActive) opacityValue *= 2; 
+
+                        brainCtx.strokeStyle = 'rgba(153, 51, 255,' + Math.min(1, opacityValue) + ')'; 
+                        brainCtx.lineWidth = 1;
+                        brainCtx.beginPath();
+                        brainCtx.moveTo(brainParticles[a].x, brainParticles[a].y);
+                        brainCtx.lineTo(brainParticles[b].x, brainParticles[b].y);
+                        brainCtx.stroke();
+                    }
+                }
+            }
+        }
+
+        function animateBrain() {
+            brainCtx.clearRect(0, 0, brainCanvas.width, brainCanvas.height);
+            connectBrainParticles();
+            brainParticles.forEach(p => { p.update(); p.draw(); });
+            requestAnimationFrame(animateBrain);
+        }
+
+        // Inicializa o cérebro da IA e a animação
+        resizeLuraBrainCanvas(); // Define o tamanho inicial
+        animateBrain();
+    </script>
+</body>
+</html>
